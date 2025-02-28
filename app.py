@@ -40,7 +40,7 @@ def main():
     # Initialize session state and document store
     init_session_state()
     initialize_document_store()
-    
+
     # Header
     st.title("CDP Support Assistant 🤖")
     st.markdown("""
@@ -50,47 +50,47 @@ def main():
     - Lytics
     - Zeotap
     """)
-    
+
     # Initialize text processor
     text_processor = TextProcessor()
-    
+
     # Chat interface
     with st.container():
         display_chat_history()
-        
+
         # Question input
         question = st.text_input(
             "Ask your question:",
             key="question_input",
             placeholder="How do I set up a new source in Segment?"
         )
-        
+
         if question:
             # Validate question
             is_valid, error_msg = text_processor.validate_question(question)
-            
+
             if not is_valid:
                 add_message("error", error_msg)
             else:
                 # Add user question to chat
                 add_message("user", question)
-                
+
                 with st.spinner("Searching for answer..."):
                     # Extract CDP if mentioned
                     cdp = text_processor.extract_cdp(question)
-                    
+
                     # Search for relevant information
                     results = st.session_state.document_store.search(
                         question, cdp
                     )
-                    
+
                     # Format and display response
-                    response = format_response(results, cdp)
+                    response = format_response(results, cdp if cdp else "general")
                     add_message("assistant", response)
-            
-            # Rerun to update chat display
-            st.experimental_rerun()
-    
+
+            # Use st.rerun() instead of experimental_rerun()
+            st.rerun()
+
     # Footer
     st.markdown("---")
     st.markdown(
