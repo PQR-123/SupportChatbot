@@ -21,9 +21,14 @@ st.markdown("""
     <style>
     .stTextInput > div > div > input {
         background-color: #f0f2f6;
+        color: black !important;
     }
     .stButton > button {
         width: 100%;
+    }
+    div[data-testid="stMarkdownContainer"] strong:has(+ em:contains("You")) + em {
+        color: black !important;
+        font-style: normal;
     }
     </style>
     """, unsafe_allow_html=True)
