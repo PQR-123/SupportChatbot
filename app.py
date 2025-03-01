@@ -61,6 +61,7 @@ def main():
 
     # Chat interface
     with st.container():
+        # Display existing chat history
         display_chat_history()
 
         # Question input
@@ -70,7 +71,8 @@ def main():
             placeholder="How do I set up a new source in Segment?"
         )
 
-        if question:
+        # Process new question
+        if question and question not in [msg["content"] for msg in st.session_state.messages if msg["role"] == "user"]:
             # Validate question
             is_valid, error_msg = text_processor.validate_question(question)
 
@@ -92,9 +94,6 @@ def main():
                     # Format and display response
                     response = format_response(results, cdp if cdp else "general")
                     add_message("assistant", response)
-
-            # Use st.rerun() instead of experimental_rerun()
-            st.rerun()
 
     # Footer
     st.markdown("---")
